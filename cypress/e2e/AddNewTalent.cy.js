@@ -78,10 +78,10 @@ describe("Login", function () {
     talentOnboard.lastName().click().type(generatedTalentData.lastName);
     generatedTalentData.talentIsLocal
       ? talentOnboard.talentIsLocalYes().click()
-      : talentOnboard.talentIsLocalNo().click();
+      : talentOnboard.talentIsLocalNo().click(); //one line condition to check withch choose based on the generated data
     generatedTalentData.talentIsSenior
       ? talentOnboard.talentIsSeniorYes().click()
-      : talentOnboard.talentIsSeniorNo().click();
+      : talentOnboard.talentIsSeniorNo().click(); //one line condition to check withch choose based on the generated data
     talentOnboard.jobTitle().click().type(generatedTalentData.jobTitle);
     talentOnboard
       .jobDescription()
@@ -99,7 +99,7 @@ describe("Login", function () {
       .type(generatedTalentData.businessAssignment);
     generatedTalentData.fullTime
       ? talentOnboard.fullTime().click()
-      : talentOnboard.partTime().click();
+      : talentOnboard.partTime().click(); //one line condition to check withch choose based on the generated data
     talentOnboard
       .hoursPerWeek()
       .click()
@@ -116,12 +116,14 @@ describe("Login", function () {
       .clear()
       .type(generatedTalentData.endDate);
     talentOnboard.eligibleReimbursements().then(($el) => {
+      //check witch the last state first before toggel it
       let test = $el.prop("checked");
       test == generatedTalentData.eligibleReimbursements
         ? null
         : talentOnboard.eligibleReimbursements().click({ force: true });
     });
     talentOnboard.workFromHome().then(($el) => {
+      //check witch the last state first before toggel it
       let test = $el.prop("checked");
       test == generatedTalentData.workFromHome
         ? null
@@ -133,7 +135,7 @@ describe("Login", function () {
           .click()
           .clear()
           .type(generatedTalentData.workAddress)
-      : null;
+      : null; //one line condition to check withch choose based on the generated data
     talentOnboard
       .costCenter()
       .click()
