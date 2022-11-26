@@ -18,7 +18,7 @@ https://beta.workmotion.com/
 
 1. CD to your project directory in terminal
 
-2. clone project using Github "https://github.com/DiaaMohamed9/"
+2. clone project using Github "https://github.com/DiaaMohamed9/WorkMoation"
 
 3. install dependancies by running the below command
    `npm install`
