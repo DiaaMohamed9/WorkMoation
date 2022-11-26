@@ -38,7 +38,7 @@ The tests are integrated with mochawesome reporting tools. In order to see test 
 
 1. Test reports are generated for every headless test run.
 
-2. check the folder `TestReport` for the latest files added
+2. check the folder `TestReport` for the latest files added TestReport/cypress-tests-report.html
 
 3. `TestReport` folder gets deleted for every new headless test run
 
