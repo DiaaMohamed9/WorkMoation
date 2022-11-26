@@ -1,0 +1,161 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 4,
+    "passes": 4,
+    "pending": 0,
+    "failures": 0,
+    "start": "2022-11-26T11:36:20.058Z",
+    "end": "2022-11-26T11:38:02.097Z",
+    "duration": 102039,
+    "testsRegistered": 4,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "e592f231-8a95-42e7-ad2a-226ad41b0284",
+      "title": "",
+      "fullFile": "cypress\\e2e\\AddNewTalent.cy.js",
+      "file": "cypress\\e2e\\AddNewTalent.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "6cbd71f5-79e8-4134-95f6-864422efbfe8",
+          "title": "Login",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Sign in",
+              "fullTitle": "Login Sign in",
+              "timedOut": null,
+              "duration": 12935,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.visit('https://beta.workmotion.com/');\nlogin.email().type(email);\nlogin.password().type(password);\ncy.intercept({\n  url: 'https://login-beta.workmotion.com/oauth2/default/v1/userinfo',\n  method: 'GET'\n}).as('userInfo');\nlogin.signInButton().should('be.visible').click();\ncy.wait('@userInfo').then(intercept => {\n  expect(intercept.response.statusCode).to.eq(200); // expect(intercept.response.body.email).to.eq(email)\n});\nmain.addTalent().should('be.visible');\ncy.saveLocalStorage();",
+              "err": {},
+              "uuid": "9ec79dbe-10f6-4cbe-996f-696d5e1b1f31",
+              "parentUUID": "6cbd71f5-79e8-4134-95f6-864422efbfe8",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Add new talent flow",
+              "fullTitle": "Login Add new talent flow",
+              "timedOut": null,
+              "duration": 54646,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.intercept({\n  url: ' https://apigw-beta.workmotion.com/schema-countries',\n  method: 'GET'\n}).as('countriesInfo');\nmain.addTalent().should('be.visible').click();\ncy.wait(5000);\nmain.createNewItem().click();\ncy.wait('@countriesInfo').then(intercept => {\n  expect(intercept.response.statusCode).to.eq(200);\n});\nvar generatedTalentData = talentOnboard.generateTalentData();\ntalentOnboard.countryList().should('be.visible').click();\ntalentOnboard.chooseCountry(generatedTalentData.countryName).scrollIntoView().should('be.visible').click();\ntalentOnboard.selectedCountery().should('be.visible').then($el => {\n  expect($el.text()).eq(generatedTalentData.countryName);\n});\ncy.wait(5000);\ntalentOnboard.getStart().should('be.visible').should('be.not.disabled').click();\ntalentOnboard.workGlobal().should('be.visible').click();\ncy.wait(5000);\ntalentOnboard.beginOnboarding().should('be.visible').should('be.not.disabled').click();\ntalentOnboard.employmentAgreementTitle().should('be.visible');\ntalentOnboard.firstName().click().type(generatedTalentData.firstName);\ntalentOnboard.lastName().click().type(generatedTalentData.lastName);\ngeneratedTalentData.talentIsLocal ? talentOnboard.talentIsLocalYes().click() : talentOnboard.talentIsLocalNo().click();\ngeneratedTalentData.talentIsSenior ? talentOnboard.talentIsSeniorYes().click() : talentOnboard.talentIsSeniorNo().click();\ntalentOnboard.jobTitle().click().type(generatedTalentData.jobTitle);\ntalentOnboard.jobDescription().click().type(generatedTalentData.jobDescription);\ncy.writeFile('cypress/fixtures/jobDescription.txt', generatedTalentData.jobDescriptionUpload).then(() => {\n  talentOnboard.jobDescriptionUpload().attachFile('jobDescription.txt');\n});\ntalentOnboard.businessAssignment().click().type(generatedTalentData.businessAssignment);\ngeneratedTalentData.fullTime ? talentOnboard.fullTime().click() : talentOnboard.partTime().click();\ntalentOnboard.hoursPerWeek().click().clear().type(generatedTalentData.hoursPerWeek);\ntalentOnboard.startDate().click().clear().type(generatedTalentData.startDate);\ntalentOnboard.endDate().click({\n  force: true\n}).clear().type(generatedTalentData.endDate);\ntalentOnboard.eligibleReimbursements().then($el => {\n  let test = $el.prop('checked');\n  test == generatedTalentData.eligibleReimbursements ? null : talentOnboard.eligibleReimbursements().click({\n    force: true\n  });\n});\ntalentOnboard.workFromHome().then($el => {\n  let test = $el.prop('checked');\n  test == generatedTalentData.workFromHome ? null : talentOnboard.workFromHome().click({\n    force: true\n  });\n});\ngeneratedTalentData.workFromHome ? talentOnboard.workAddress().click().clear().type(generatedTalentData.workAddress) : null;\ntalentOnboard.costCenter().click().clear().type(generatedTalentData.costCenter);\ntalentOnboard.signatoryFullName().click().clear().type(generatedTalentData.signatoryFullName);\ntalentOnboard.signatoryTitle().click().clear().type(generatedTalentData.signatoryTitle);\ntalentOnboard.directManagerEmail().click().clear().type(generatedTalentData.directManagerEmail);\ntalentOnboard.continue().click();\ncy.wait(5000);\ntalentOnboard.paidTimeOff().click().clear().type(generatedTalentData.paidTimeOff);\ntalentOnboard.probationPeriodEnablement().then($el => {\n  let test = $el.prop('checked');\n  test == generatedTalentData.probationPeriodEnablement ? null : talentOnboard.probationPeriodEnablement().click({\n    force: true\n  });\n});\ngeneratedTalentData.probationPeriodEnablement ? talentOnboard.chooseProbationPeriodScale().click() : null;\ngeneratedTalentData.probationPeriodEnablement ? talentOnboard.chooseScaleSelectType(generatedTalentData.probationPeriodScaleType).click() : null;\ngeneratedTalentData.probationPeriodEnablement ? talentOnboard.probationPeriod().click().clear().type(generatedTalentData.probationPeriod) : null;\ntalentOnboard.chooseNoticePeroidScale().click();\ntalentOnboard.chooseScaleSelectType(generatedTalentData.noticePeroidScaleType).click();\ntalentOnboard.noticePeroid().click().clear().type(generatedTalentData.noticePeroid);\ntalentOnboard.anythingElse().click().clear().type(generatedTalentData.anythingElse);\ntalentOnboard.continue().click();\ncy.wait(5000);\ngeneratedTalentData.esopProvided ? talentOnboard.esopProvidedYes().click() : talentOnboard.esopProvidedNo().click();\ngeneratedTalentData.esopProvided ? talentOnboard.esopProvidedAcknowledge().click({\n  force: true\n}) : null;\ntalentOnboard.salaryGrossSalary().click().clear().type(generatedTalentData.salaryGrossSalary);\ntalentOnboard.annualBonusEnablement().then($el => {\n  let test = $el.prop('checked');\n  test == generatedTalentData.annualBonusEnablement ? null : talentOnboard.annualBonusEnablement().click({\n    force: true\n  });\n});\ngeneratedTalentData.annualBonusEnablement ? talentOnboard.totalYearlyBonus().click().clear().type(generatedTalentData.totalYearlyBonus) : null;\ngeneratedTalentData.annualBonusEnablement ? talentOnboard.bonusPayoutFrequencySelect().click() : null;\ngeneratedTalentData.annualBonusEnablement ? talentOnboard.frequencySelect(generatedTalentData.bonusPayoutFrequencySelect).click() : null;\ngeneratedTalentData.annualBonusEnablement ? talentOnboard.bonusAnythingElse().click().clear().type(generatedTalentData.bonusAnythingElse) : null;\ntalentOnboard.signOnBonus().click().clear().type(generatedTalentData.signOnBonus);\ncy.writeFile('cypress/fixtures/talentGeneratedData.json', generatedTalentData);\ntalentOnboard.continue().click();\ncy.wait(5000);\ntalentOnboard.candidateEmail().click().clear().type(generatedTalentData.candidateEmail);\ntalentOnboard.continue().click();\ncy.wait(5000);",
+              "err": {},
+              "uuid": "229e012d-e7aa-4dbb-8483-51bdae841d91",
+              "parentUUID": "6cbd71f5-79e8-4134-95f6-864422efbfe8",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "confirm the new talent info",
+              "fullTitle": "Login confirm the new talent info",
+              "timedOut": null,
+              "duration": 10472,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.readFile('cypress/fixtures/talentGeneratedData.json').then(expectedData => {\n  talentOnboardConfirmation.firstName().should('have.text', expectedData.firstName);\n  talentOnboardConfirmation.lastName().should('have.text', expectedData.lastName);\n  talentOnboardConfirmation.executive().should('have.text', expectedData.talentIsSenior ? 'Yes' : 'No');\n  talentOnboardConfirmation.jobTitle().should('have.text', expectedData.jobTitle);\n  talentOnboardConfirmation.jobDescription().should('have.text', expectedData.jobDescription);\n  talentOnboardConfirmation.businessAssignmen().should('have.text', expectedData.businessAssignment);\n  talentOnboardConfirmation.employmentType().should('have.text', expectedData.fullTime ? 'full-time' : 'part-time');\n  talentOnboardConfirmation.workingHours().should('have.text', `${expectedData.hoursPerWeek.toString()} `);\n  talentOnboardConfirmation.startDate().should('have.text', moment(expectedData.startDate, 'DD-MM-YYYY').format('YYYY-MM-DD'));\n  talentOnboardConfirmation.endDate().should('have.text', moment(expectedData.endDate, 'DD-MM-YYYY').format('YYYY-MM-DD'));\n  talentOnboardConfirmation.paidTimeOff().should('have.text', `${expectedData.paidTimeOff.toString()} Days`);\n  talentOnboardConfirmation.confirmSummary().click({\n    force: true\n  });\n  talentOnboardConfirmation.finishButton().click();\n  cy.wait(5000);\n  talentOnboardConfirmation.completeOnboarding().click();\n  cy.wait(5000);\n});",
+              "err": {},
+              "uuid": "8f273e4f-369f-4c82-ac55-0a9fb9071cc3",
+              "parentUUID": "6cbd71f5-79e8-4134-95f6-864422efbfe8",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "check the new talent at talents page",
+              "fullTitle": "Login check the new talent at talents page",
+              "timedOut": null,
+              "duration": 18764,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "main.talentsLink().click();\ncy.wait(5000);\ncy.readFile('cypress/fixtures/talentGeneratedData.json').then(expectedData => {\n  var expectedTalentName = `${expectedData.firstName} ${expectedData.lastName}`;\n  talents.talentName(expectedTalentName).should('have.text', expectedTalentName);\n  talents.countryName(expectedTalentName).should('have.text', expectedData.countryName);\n  talents.creationDate(expectedTalentName).should('have.text', moment().format('YYYY-MM-DD'));\n  if (talents.status(expectedTalentName).then($el => {\n    $el.text() != 'ONBOARDING';\n  })) {\n    cy.waitUntil(() => cy.reload().then(() => {\n      talents.status(expectedTalentName).then($el => {\n        $el.text() == 'ONBOARDING';\n      });\n    }), {\n      errorMsg: 'This is a custom error message',\n      // overrides the default error message\n      timeout: 2000,\n      // waits up to 2000 ms, default to 5000\n      interval: 500 // performs the check every 500 ms, default to 200\n    });\n  }\n  talents.status(expectedTalentName).should('have.text', 'ONBOARDING');\n});",
+              "err": {},
+              "uuid": "a25ff01b-fad8-427f-a319-9f32f3fdf296",
+              "parentUUID": "6cbd71f5-79e8-4134-95f6-864422efbfe8",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "9ec79dbe-10f6-4cbe-996f-696d5e1b1f31",
+            "229e012d-e7aa-4dbb-8483-51bdae841d91",
+            "8f273e4f-369f-4c82-ac55-0a9fb9071cc3",
+            "a25ff01b-fad8-427f-a319-9f32f3fdf296"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 96817,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.0.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "6.2.0"
+    }
+  }
+}
