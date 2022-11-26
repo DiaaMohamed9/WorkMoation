@@ -1,8 +1,8 @@
 # workmotion Task
 
 ## The Traget Project:
-https://beta.workmotion.com/
 
+https://beta.workmotion.com/
 
 ## Pre-requisites:
 
@@ -11,8 +11,6 @@ https://beta.workmotion.com/
 2. Install Visual Studio Code from https://code.visualstudio.com/download (Personal preference)
 
 3. Install Github desktop from https://desktop.github.com/ (This is a personal preference, you can use github cli from terminal as well)
-
-
 
 ## Setup
 
@@ -27,10 +25,9 @@ https://beta.workmotion.com/
 
 1. run `npm run test` in terminal to run in headless mode
 
-2. run `npx cypress open` to open cypress 
+2. run `npx cypress open` to open cypress
 
 3. Check the test configurations found in package.json file and run the test you need to be run
-
 
 ## Generate test report
 
@@ -54,4 +51,4 @@ This section aims to give a hint on the usage of each file/directory
 4. `cypress/plugins`: contains different plugins used to access different environments
 5. `cypress/support`: contains custom made commands and index file to handle hooks or exception globally.
 6. `cypress.json`: contains cypress config such as timeout, reporter etc..
-7.   `package.json`: contains dependancies and run commands
+7. `package.json`: contains dependancies and run commands

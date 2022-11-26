@@ -14,11 +14,11 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import './commands'
-require('cypress-xpath');
+import "./commands";
+require("cypress-xpath");
 import "cypress-localstorage-commands";
-import { faker } from '@faker-js/faker';
-import 'cypress-file-upload';
+import { faker } from "@faker-js/faker";
+import "cypress-file-upload";
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
