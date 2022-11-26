@@ -21,28 +21,31 @@ beforeEach('', () => {
    cy.restoreLocalStorage()
 })
     it('Sign in', function () {
+      /* test the login flow and save the cookies and locastorage to use it at all other test cases without need to login again */
         cy.visit('https://beta.workmotion.com/')
         login.email().type(email)
         login.password().type(password)
-        cy.intercept({url:'https://login-beta.workmotion.com/oauth2/default/v1/userinfo',method:'GET'}).as('userInfo')
+        cy.intercept({url:'https://login-beta.workmotion.com/oauth2/default/v1/userinfo',method:'GET'}).as('userInfo') //to check the login done successfully after login get the user data to make sure everything working fine
         login.signInButton().should('be.visible').click()
         cy.wait('@userInfo').then((intercept) => {
-            expect(intercept.response.statusCode).to.eq(200)
+            expect(intercept.response.statusCode).to.eq(200)// check the user info after login 
             // expect(intercept.response.body.email).to.eq(email)
          })
          main.addTalent().should('be.visible')
-        cy.saveLocalStorage()
+        cy.saveLocalStorage()//to avoid logout between the testcases
 
     })
     it('Add new talent flow', function () {
-        cy.intercept({url:' https://apigw-beta.workmotion.com/schema-countries',method:'GET'}).as('countriesInfo')
+      /* test the Add new talent flow by checking the existance of the fields and also by filling all of them and save the filled data to validate against it */
+        cy.intercept({url:' https://apigw-beta.workmotion.com/schema-countries',method:'GET'}).as('countriesInfo')//make sure we got the country list API 
         main.addTalent().should('be.visible').click()
         cy.wait(5000)
         main.createNewItem().click()
         cy.wait('@countriesInfo').then((intercept) => {
             expect(intercept.response.statusCode).to.eq(200)
          })
-         var generatedTalentData=talentOnboard.generateTalentData()
+         var generatedTalentData=talentOnboard.generateTalentData()//genrate data for all needed data to add new talent and save that data to validate against it at the next tests
+         //fill all needed data and check the input fields is visible
          talentOnboard.countryList().should('be.visible').click()
          talentOnboard.chooseCountry(generatedTalentData.countryName).scrollIntoView().should('be.visible').click()
          talentOnboard.selectedCountery().should('be.visible').then(($el)=>{
@@ -117,6 +120,7 @@ beforeEach('', () => {
          cy.wait(5000)
     })
     it('confirm the new talent info', function () {
+            /* test the confirm the new talent info flow by checking the generated data against the actual saved data  */
       cy.readFile('cypress/fixtures/talentGeneratedData.json').then((expectedData)=>{
         talentOnboardConfirmation.firstName().should('have.text',expectedData.firstName)
         talentOnboardConfirmation.lastName().should('have.text',expectedData.lastName)
@@ -137,6 +141,7 @@ beforeEach('', () => {
       })
     })
     it('check the new talent at talents page', function () {
+            /* test the the new talent at talents page  by goging to the talents page and validate the talent added with the expected data  */
       main.talentsLink().click()
       cy.wait(5000)
       cy.readFile('cypress/fixtures/talentGeneratedData.json').then((expectedData)=>{
@@ -144,7 +149,7 @@ beforeEach('', () => {
          talents.talentName(expectedTalentName).should('have.text',expectedTalentName)
          talents.countryName(expectedTalentName).should('have.text',expectedData.countryName)
          talents.creationDate(expectedTalentName).should('have.text',moment().format('YYYY-MM-DD'))
-         if(talents.status(expectedTalentName).then(($el)=>{$el.text()!='ONBOARDING'})){
+         if(talents.status(expectedTalentName).then(($el)=>{$el.text()!='ONBOARDING'})){//wait until the talent become Onboarding status not draft if the correct flow need to wait  
             cy.waitUntil(() => cy.reload().then(()=>{
                talents.status(expectedTalentName).then(($el)=>{$el.text()=='ONBOARDING'})
             }), {
